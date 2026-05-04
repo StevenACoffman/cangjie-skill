@@ -1,101 +1,101 @@
-# {{BOOK_TITLE}} — 整书理解 (阶段 0 产出)
+# {{BOOK_TITLE}} — Understanding the Whole Book (Phase 0 Output)
 
-> 本文档是 book2skill 流水线的阶段 0 产出, 后续所有 extractor 和 skill 都以此为全局上下文。
+This document is the output of stage 0 of the book2skill pipeline. All subsequent extractors and skills will use this as the global context.
 
-## 基本信息
+## Basic Information
 
-- **书名**: {{BOOK_TITLE}}
-- **作者**: {{AUTHOR}}
-- **出版年**: {{YEAR}}
-- **版本来源**: {{SOURCE_FILE}}
-- **处理时间**: {{DATE}}
+- **Book Title**: {{BOOK_TITLE}}
+- **Author: {{AUTHOR}}
+- **Publication Year**: {{YEAR}}
+- **Version Source: {{SOURCE_FILE}}
+- **Processing Time**: {{DATE}}
 
 ---
 
-## 1. 结构 (Structural)
+## 1. Structure
 
-### 类型
-{{ 方法论 / 传记 / 哲学 / 实操手册 / ... }}
+### type
+{{Methodology/Biography/Philosophy/Practical Manual/...}}
 
-### 一句话主旨
-{{ 用一句话说清这本书在讲什么, 必须真的是一句 }}
+### One-sentence summary
+Summarize what this book is about in one sentence; it must be exactly one sentence.
 
-### 骨架 (主要论点及其关系)
+### Framework (Main Arguments and Their Relationships)
 
-1. {{论点 1}}
-2. {{论点 2}}
-3. {{论点 3}}
+1. {{Argument 1}}
+2. {{Argument 2}}
+3. {{Argument 3}}
 ...
 
-**论点之间的关系**: {{ 并列 / 递进 / 对比 / 反驳 / 层层深入 }}
+**Relationship between arguments**: {{Parallel/Progressive/Contrast/Refutation/Layered In-depth}}
 
-### 作者要解决的核心问题
-{{ 作者写这本书是为了回答什么问题 }}
+### The core problem the author wanted to solve
+What question did the author write this book to answer?
 
 ---
 
-## 2. 解释 (Interpretive)
+## 2. Interpretive Explanation
 
-### 关键术语 (作者本人的用法)
+### Key Terms (Author's Own Usage)
 
-| 术语 | 作者的定义 | 和常识用法的差异 |
+| Terminology | Author's definition | Differences from common usage |
 |---|---|---|
 | {{term}} | {{author's definition}} | {{what's different}} |
 
-### 核心命题 (用自己的话)
+### Core Proposition (in your own words)
 
-1. {{命题 1}}
-2. {{命题 2}}
+1. {{Proposition 1}}
+2. {{Proposition 2}}
 ...
 
-### 论证链
-{{ 作者用什么证据/论证路径把这些命题串起来 }}
+### Chain of Argumentation
+What evidence/argumentation path did the author use to connect these propositions?
 
 ---
 
-## 3. 批判 (Critical) ★
+## 3. Criticism ★
 
-### 作者的时代局限
+### Limitations of the author's era
 - {{ ... }}
 
-### 作者的立场盲点
+### Author's Blind Spot
 - {{ ... }}
 
-### 未被证明的假设
+### Unproven Hypotheses
 - {{ ... }}
 
-### 最强反对意见
-{{ 如果有人要反驳这本书, 最强的论点会是什么 }}
+### Strongest Opposition
+If someone were to refute this book, what would be the strongest argument?
 
-> **以上批判会直接成为下游 skill 的 Boundary (B) 字段来源**
+The above criticisms will directly become the source of the Boundary (B) field for downstream skills.
 
 ---
 
-## 4. 应用潜力 (Applicability)
+## 4. Applicability
 
-### 可 skill 化的内容
-- [ ] {{候选主题 1}}
-- [ ] {{候选主题 2}}
+### Skillable Content
+- [ ] {{Candidate Topic 1}}
+- [ ] {{Candidate Topic 2}}
 ...
 
-### 不适合 skill 化的内容
-- {{ 这些内容会作为 example / 引用保留, 但不独立成 skill }}
+### Content unsuitable for skill-based approaches
+This content will be retained as an example/reference, but not as a separate skill.
 
-### 预估 skill 数量
-**约 {{N}} 个** (最终由阶段 1.5 三重验证决定, 这里只是粗估)
+### Estimated number of skills
+**Approximately {{N}}** (The final number will be determined by the triple verification in Phase 1.5; this is just a rough estimate)
 
-### 优先级排序 (按"最能赋能普通人"的角度)
+### Prioritization (based on "most empowering ordinary people")
 1. {{top priority}}
 2. {{...}}
 
 ---
 
-## ✅ 质量门检查
+## ✅ Quality gate inspection
 
-- [ ] 主旨能用一句话说清
-- [ ] 骨架列出 3–7 个一级论点
-- [ ] 关键术语词典 ≥5 条
-- [ ] 批判阶段列出 ≥3 条作者局限
-- [ ] 已向用户展示并得到确认
+- [ ] The main idea can be expressed in one sentence.
+- [ ] The skeleton lists 3–7 primary arguments.
+- [ ] Key term dictionary entries ≥ 5
+- [ ] List ≥3 authorial limitations during the critique phase.
+- [ ] has been shown to the user and confirmed.
 
-**用户确认时间**: {{ }}
+**User confirmation time**: {{ }}

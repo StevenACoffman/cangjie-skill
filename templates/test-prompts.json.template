@@ -7,46 +7,46 @@
     {
       "id": "should-trigger-01",
       "type": "should_trigger",
-      "prompt": "{{用户的典型话语 1 — 正面场景}}",
-      "expected_behavior": "应激活 {{skill-slug}}, 并 {{期望的具体动作}}",
-      "notes": "{{为什么这是正面场景}}"
+      "prompt": "{{Typical User Phrases 1 — Positive Scenario}}",
+      "expected_behavior": "Skill slug should be activated, and the specific action expected should be performed."
+      "notes": "{{Why is this a positive scene}}"
     },
     {
       "id": "should-trigger-02",
       "type": "should_trigger",
-      "prompt": "{{用户的典型话语 2}}",
+      "prompt": "{{Typical User Phrases 2}}",
       "expected_behavior": "...",
       "notes": "..."
     },
     {
       "id": "should-trigger-03",
       "type": "should_trigger",
-      "prompt": "{{用户的典型话语 3}}",
+      "prompt": "{{Typical User Phrases 3}}",
       "expected_behavior": "...",
       "notes": "..."
     },
     {
       "id": "should-not-trigger-01",
       "type": "should_not_trigger",
-      "prompt": "{{诱饵 1 — 看似相关但实际不该调用}}",
-      "expected_behavior": "不应激活本 skill, 因为 {{理由}}",
-      "notes": "诱饵: {{这是什么类型的诱饵}}"
+      "prompt": "{{Decoy 1 — Seemingly relevant but should not actually be called}}",
+      "expected_behavior": "This skill should not be activated because {{reason}}",
+      Notes: "Lure: {{What type of lure is this?}}"
     },
     {
       "id": "should-not-trigger-02",
       "type": "should_not_trigger",
-      "prompt": "{{诱饵 2 — 另一种不该调用的情况}}",
+      "prompt": "{{Decoy 2 — Another situation where it shouldn't be called}}",
       "expected_behavior": "...",
       "notes": "..."
     },
     {
       "id": "edge-01",
       "type": "edge_case",
-      "prompt": "{{边界模糊场景}}",
-      "expected_behavior": "{{期望的合理判断 — 可能是调用, 可能是不调用, 但要说清为什么}}",
-      "notes": "边界: {{为什么这是边界}}"
+      "prompt": "{{Blurred boundary scene}}",
+      "expected_behavior": "{{A reasonable judgment of expectation—it might be that the function is called, or it might not be called, but the reason must be clearly explained}}",
+      Notes: Boundary: {{Why is this a boundary?}}
     }
   ],
   "minimum_pass_rate": 0.8,
-  "notes": "至少 3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。全部 should_not_trigger 必须通过 (诱饵容错为 0)。"
+  Notes: "At least 3 should_triggers + 2 should_not_triggers + 1 edge_case. All should_not_triggers must pass (decoy tolerance is 0)."
 }

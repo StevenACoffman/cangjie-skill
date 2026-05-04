@@ -1,141 +1,141 @@
 ---
 name: book2skill
-description: Distill a book into a coherent set of executable skills. Use when the user asks to "拆书" / "蒸馏一本书" / "把 XX 书做成 skill" / "turn a book into skills" — i.e. wants a book's frameworks, principles, and methodologies extracted into atomic, reusable Claude skills that an agent can invoke in real-world situations. NOT for simple summarization, book reviews, or role-playing as the author (that is nuwa-skill's job).
+description: Distill a book into a coherent set of executable skills. Use when the user asks to "Disassemble a book" / "Distill a book" / "Make a book skill" / "turn a book into skills" — i.e. wants a book's frameworks, principles, and methodologies extracted into atomic, reusable Claude skills that an agent can invoke in real-world situations. NOT for simple summarization, book reviews, or role-playing as the author (that is nuwa-skill's job).
 ---
 
-# book2skill — 把一本书蒸馏成一组可执行 skills 的元 skill
+# book2skill — Distills a book into a set of executable skills, which are then called meta-skills.
 
-## 使命
+## Mission
 
-把一本书里沉淀的方法论,拆解成一组**原子化、可被 agent 在真实场景下调用**的 skills,让读者真正用起来。
+The methodologies distilled from a book are broken down into a set of **atomic** skills that can be invoked by agents in real-world scenarios, allowing readers to actually use them.
 
-**边界**:
-- ✅ 做: 方法论 / 决策框架 / 清单 / 原则 / 概念体系的蒸馏
-- ❌ 不做: 书摘 / 读后感 / 作者人设角色扮演 (后者请用 nuwa-skill)
+**boundary**:
+- ✅ Do: Distillation of methodology/decision framework/checklist/principles/conceptual system
+- ❌ Do not include: book excerpts/reading notes/author persona role-playing (for the latter, please use nuwa-skill).
 
-## 核心方法论: RIA-TV++
+## Core Methodology: RIA-TV++
 
-一个四阶段 + 并行提取 + 三重验证 + darwin 兼容测试的流水线。详见 `methodology/00-overview.md`。
+A pipeline with four phases, parallel extraction, triple validation, and Darwin compatibility testing. See `methodology/00-overview.md` for details.
 
 ```
-阶段 0: Adler 整书理解     → BOOK_OVERVIEW.md
-阶段 1: 5 个 agent 并行提取 → 候选方法论单元池
-阶段 1.5: 三重验证筛选       → 通过的单元
-阶段 2: RIA++ 构造 skill     → 每个 skill 的 SKILL.md
-阶段 3: Zettelkasten 链接    → INDEX.md
-阶段 4: 压力测试 (darwin 兼容) → test-prompts.json + 回炉淘汰
+Phase 0: Understanding the entire Adler book → BOOK_OVERVIEW.md
+Phase 1: Parallel extraction of 5 agents → Candidate methodology unit pool
+Phase 1.5: Triple Validation Screening → Units that Pass
+Phase 2: RIA++ constructs skills → SKILL.md for each skill
+Phase 3: Zettelkasten Link → INDEX.md
+Phase 4: Stress Testing (Darwin Compatible) → test-prompts.json + Rework and Elimination
 ```
 
-## 何时调用此 skill
+## When to invoke this skill
 
-用户说类似:
-- "帮我拆《穷查理宝典》"
-- "把毛选蒸馏成 skill"
+Users said something similar:
+- "Help me disassemble 'Poor Charlie's Almanack'"
+- "Distilling Mao's Selected Works into a skill"
 - "distill this book into skills: <path>"
-- "我想把这本书的方法论做成可用的 skill"
+- "I want to turn the methodology in this book into a usable skill."
 
-## 输入要求
+## Input Requirements
 
-在开始前**必须**从用户处确认:
-1. **书的文本来源**: PDF / EPUB / TXT 文件路径, 或可访问的纯文本。**不要**在没有文本的情况下"凭记忆"拆书 — 宁可停下来问用户要。
-2. **书名 + 作者 + 出版年**: 用于目录命名和审计。
-3. **是否首次试点**: 如果用户是第一次用 book2skill,建议先拆 1 本验证流程再批量。
+**Confirmation must be obtained from the user before proceeding:**
+1. **The text source of the book:** PDF / EPUB / TXT file path, or accessible plain text. **Do not** dissect the book "from memory" without the text—it's better to stop and ask the user.
+2. **Title + Author + Publication Year**: Used for catalog naming and auditing.
+3. **Is this the first time piloting?**: If this is the first time the user is using book2skill, it is recommended to split the verification process into one book first and then proceed with the batch.
 
-## 输出结构
+## Output Structure
 
 ```
 books/<book-slug>/
-├── BOOK_OVERVIEW.md           # 阶段 0 产出: 主旨/骨架/术语/批判
-├── INDEX.md                   # 阶段 3 产出: skill 总览 + 引用图
-├── candidates/                # 阶段 1 产出: 原始候选池 (审计用)
-├── rejected/                  # 阶段 1.5 淘汰的单元 + 原因 (审计用)
+├── BOOK_OVERVIEW.md # Phase 0 Outputs: Theme/Skeleton/Terminology/Criticism
+├── INDEX.md # Stage 3 Output: Skill Overview + Reference Image
+├── candidates/ # Phase 1 Output: Original candidate pool (for auditing)
+├── rejected/ # Phase 1.5 Unit rejected + Reason (for auditing purposes)
 ├── <skill-slug-1>/
 │   ├── SKILL.md
-│   └── test-prompts.json      # darwin-skill 兼容格式
+│ └── test-prompts.json # darwin-skill compatible format
 ├── <skill-slug-2>/
 │   └── ...
 ```
 
-## 执行流程 (严格按顺序)
+## Execution Flow (Strictly in Sequence)
 
-### 阶段 0 — 整书理解
+### Stage 0 — Understanding the Whole Book
 
-1. 读取用户提供的书本文本。大文件分块阅读。
-2. 执行 `methodology/01-stage0-adler.md` 中的 Adler 四步 (结构 / 解释 / 批判 / 应用)。
-3. 按 `templates/BOOK_OVERVIEW.md.template` 填充,写入 `books/<slug>/BOOK_OVERVIEW.md`。
-4. 把产出展示给用户确认:"骨架我理解对了吗?有没有你希望重点突出的方向?" 得到确认再进入阶段 1。
+1. Read user-provided book text. Large files are read in chunks.
+2. Perform the four Adler steps (structure/interpretation/critique/application) in `methodology/01-stage0-adler.md`.
+3. Fill in `templates/BOOK_OVERVIEW.md.template` and write `books/<slug>/BOOK_OVERVIEW.md`.
+4. Show the output to the user for confirmation: "Did I understand the framework correctly? Are there any key areas you want to emphasize?" Only proceed to stage 1 after receiving confirmation.
 
-### 阶段 1 — 5 个 sub-agent 并行提取
+### Phase 1 — Parallel extraction of 5 sub-agents
 
-**并行** spawn 5 个 Task sub-agents(使用 Agent 工具,一次调用中发起 5 个):
+**Parallelism** spawns 5 Task sub-agents (using the Agent tool, 5 are launched in a single call):
 
-| sub-agent | 读取的 prompt | 产出 |
+| sub-agent | prompt read | output |
 |---|---|---|
-| 框架提取器 | `extractors/framework-extractor.md` | 决策框架 / 思维模型 |
-| 原则提取器 | `extractors/principle-extractor.md` | 原则 / 清单 / 规则 |
-| 案例提取器 | `extractors/case-extractor.md` | 作者在书中亲自使用过的实例 |
-| 反例提取器 | `extractors/counter-example-extractor.md` | 书中警告的失败模式 |
-| 术语提取器 | `extractors/glossary-extractor.md` | 关键概念词典 |
+| Framework Extractor | `extractors/framework-extractor.md` | Decision Framework / Mental Model |
+| Principle Extractor | `extractors/principle-extractor.md` | Principles/Lists/Rules |
+| Case Extractor | `extractors/case-extractor.md` | Examples personally used by the author in the book |
+| Counterexample Extractor | `extractors/counter-example-extractor.md` | Failure patterns warned about in the book |
+| Terminology Extractor | `extractors/glossary-extractor.md` | Key Concept Dictionary |
 
-每个 sub-agent 独立读书、独立提取、独立输出到 `books/<slug>/candidates/<type>.md`。
+Each sub-agent independently reads, extracts, and outputs data to `books/<slug>/candidates/<type>.md`.
 
-### 阶段 1.5 — 三重验证筛选
+### Phase 1.5 — Triple Validation Screening
 
-读取 `methodology/03-stage1.5-triple-verify.md`,对每个候选单元执行:
+Read `methodology/03-stage1.5-triple-verify.md` and execute the following for each candidate unit:
 
-- **V1 跨域**: 书中至少 2 个独立段落有佐证?
-- **V2 预测力**: 能用它回答一个书里没明说的新问题吗?
-- **V3 独特性**: 不是任何聪明人都会说的常识吗?
+- **V1 Cross-Domain:** Does the book contain at least two independent paragraphs providing supporting evidence?
+- **V2 Predictive Power**: Can it be used to answer a new question that isn't explicitly addressed in the book?
+- **V3 Uniqueness**: Isn't this common sense that any intelligent person would say?
 
-通过的进入阶段 2。不通过的写入 `books/<slug>/rejected/` 并附原因 — 保留审计轨迹,也允许用户事后捞回。
+Successful entries proceed to Phase 2. Unsuccessful entries are written to `books/<slug>/rejected/` with the reason—this preserves the audit trail and allows users to retrieve the results later.
 
-### 阶段 2 — RIA++ 构造 skill
+### Phase 2 — RIA++ construct skill
 
-对每个通过的单元,按 `templates/SKILL.md.template` 填充:
+For each passed cell, populate `templates/SKILL.md.template`:
 
-- **R (Reading)**: 原文引用 ≤150 字/段
-- **I (Interpretation)**: 用自己的话重写方法论骨架 (避免照搬译本)
-- **A1 (Past Application)**: 书中作者用过的案例
-- **A2 (Future Trigger)** ★: 用户在什么情境下会需要这个 → skill 的 `description` 字段
-- **E (Execution)**: 1-2-3 可执行步骤
-- **B (Boundary)**: 什么时候不适用 / 来自阶段 0 批判阶段的作者盲点
+- **R (Reading)**: Original text citation ≤ 150 words/paragraph
+- **I (Interpretation)**: Rewrite the methodology framework in your own words (avoiding simply copying the translation).
+- **A1 (Past Application)**: Case studies used by the author in the book
+- **A2 (Future Trigger)** ★: In what situations would a user need this → the `description` field of a skill.
+- **E (Execution)**: 1-2-3 Executable Steps
+- **B (Boundary)**: When is it inapplicable/Blind spots of the author from Stage 0, the critical stage.
 
-细则见 `methodology/04-stage2-ria-plus.md`。
+See `methodology/04-stage2-ria-plus.md` for details.
 
-### 阶段 3 — Zettelkasten 链接
+### Phase 3 — Zettelkasten Link
 
 按 `methodology/05-stage3-zettelkasten.md`:
-1. 找出 skill 之间的引用关系 (A 依赖 B / A 对比 B / A 组合 B)
-2. 在每个 SKILL.md 末尾补"相关 skills"段
-3. 按 `templates/INDEX.md.template` 生成 `INDEX.md` (含引用图 mermaid)
+1. Identify the reference relationships between skills (A depends on B / A compares to B / A combines with B).
+2. Add a "Related skills" section to the end of each SKILL.md file.
+3. Generate `INDEX.md` (including the referenced image mermaid) by clicking `templates/INDEX.md.template`.
 
-### 阶段 4 — 压力测试 (darwin 兼容)
+### Phase 4 — Stress Testing (Darwin Compatible)
 
-对每个 skill 按 `methodology/06-stage4-pressure-test.md`:
-1. 设计 5–10 条测试 prompt,按 `templates/test-prompts.json.template` 写入 `test-prompts.json`
-2. 至少包括 3 类: **应调用** / **不应调用 (诱饵)** / **边界模糊**
-3. 本地跑一遍,**未过的回炉重做阶段 2** — 不做"表面修补"
-4. 全部通过后通知用户: "已完成,可一键喂给 darwin-skill 自动进化"
+For each skill, press `methodology/06-stage4-pressure-test.md`:
+1. Design 5–10 test prompts and write them into `test-prompts.json` using `templates/test-prompts.json.template`.
+2. Includes at least 3 categories: **Should be invoked** / **Should not be invoked (decoy)** / **Blurred boundaries**
+3. Run it locally once; **stage 2: Rework if it fails** — No "surface repairs" are allowed.
+4. After all steps are completed, notify the user: "Completed. You can feed it to darwin-skill for automatic evolution with one click."
 
-## 质量红线 (违反则阻止输出)
+## Quality Red Line (Output will be stopped if violated)
 
-1. 每个 skill 必须通过**全部**三重验证
-2. 每个 skill 必须有完整的 R / I / A1 / A2 / E / B 六段
-3. 原文引用 ≤150 字/段
-4. 每个 skill 必须有 `test-prompts.json`,且包含诱饵测试 (不应调用的场景)
-5. `description` 字段必须明确 trigger 条件,不能只是"一个关于 X 的 skill"
+1. Each skill must pass **all** triple verifications.
+2. Each skill must have a complete set of six segments: R, I, A1, A2, E, and B.
+3. Original text quotations ≤ 150 words/paragraph
+4. Each skill must have a `test-prompts.json` file, which includes decoy tests (scenarios that should not be invoked).
+5. The `description` field must explicitly specify the trigger condition; it cannot simply be "a skill about X".
 
-## 与 nuwa-skill / darwin-skill 的生态定位
+## Ecosystem positioning compared to nuwa-skill / darwin-skill
 
-- **nuwa-skill**: 蒸馏人 (思维方式 / 表达 DNA)
-- **book2skill** (本 skill): 蒸馏书 (方法论 / 框架 / 原则)
-- **darwin-skill**: 进化任意 skill
+- **nuwa-skill**: Distilled person (mindset/expressive DNA)
+- **book2skill** (This skill): Distilling books (methodology/framework/principles)
+- **darwin-skill**: Evolve any skill
 
-三者咬合: 本 skill 输出的 `test-prompts.json` 严格遵循 darwin-skill 格式,以便产出的 skill 可直接接入 darwin 做自动进化。
+The three elements work together: The `test-prompts.json` output by this skill strictly follows the darwin-skill format so that the generated skill can be directly connected to darwin for automatic evolution.
 
-## 调用惯例
+## Calling Conventions
 
-- **永远先试点 1 本** — 除非用户明确说"批量"
-- **阶段之间主动汇报进度** — 不要静默跑完再 dump 结果
-- **不凭记忆拆书** — 没文本就停下来问
-- **保留审计轨迹** — candidates/ 和 rejected/ 都要留
+- **Always test with 1 unit first** — unless the user explicitly says "bulk".
+- **Proactively report progress between stages** — Don't silently run the program and then dump the results.
+- **Unpacking books without relying on memory** — Stop and ask questions if there's no text.
+- **Preserve audit trails** — Both candidates and rejected candidates should be recorded.

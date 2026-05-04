@@ -1,25 +1,25 @@
-# 阶段 3 — Zettelkasten 链接 + INDEX
+# Phase 3 — Zettelkasten Link + INDEX
 
-## 目标
+## Target
 
-把原子 skill 之间的关系显式化,形成一个可导航的网络,而不是一堆孤立文件。
+Make the relationships between atomic skills explicit, forming a navigable network instead of a bunch of isolated files.
 
-## 三类关系
+## Three Types of Relationships
 
-1. **依赖 (depends-on)**: A 的使用前提是先理解 B
-   - 例: "检查清单决策" 依赖 "多元思维模型" (因为清单的项来自模型)
+1. **Dependency (depends-on):** The prerequisite for using A is understanding B.
+   - Example: "Checklist decisions" rely on "multiple mental models" (because the checklist items come from the models).
 
-2. **对比 (contrasts-with)**: A 和 B 是两种可选方案,看情境选一
-   - 例: "正向推理" 对比 "逆向思维"
+2. **Contrasts-with**: A and B are two options; choose one based on the context.
+   Example: "Forward reasoning" versus "reverse thinking"
 
-3. **组合 (composes-with)**: A 和 B 经常配合使用
-   - 例: "能力圈判断" 组合 "安全边际"
+3. **Composers-with:** A and B are often used together.
+   Example: Combining "circle of competence assessment" with "margin of safety".
 
-## 执行步骤
+## Execution Steps
 
-1. 列出阶段 2 产出的所有 skill
-2. 两两扫描,识别是否存在上述三类关系
-3. 在每个 skill 的 frontmatter `related_skills` 字段填入:
+1. List all skills produced in Phase 2.
+2. Perform pairwise scans to identify whether the above three types of relationships exist.
+3. In the frontmatter `related_skills` field of each skill, enter:
    ```yaml
    related_skills:
      - slug: multi-mental-models
@@ -27,18 +27,18 @@
      - slug: forward-reasoning
        relation: contrasts-with
    ```
-4. 在每个 skill 的 SKILL.md 末尾追加"相关 skills"段,用自然语言说明关系
-5. 生成 `books/<slug>/INDEX.md` (模板 `templates/INDEX.md.template`)
+4. Append a "Related Skills" section to the end of the SKILL.md file for each skill, explaining the relationship in natural language.
+5. Generate `books/<slug>/INDEX.md` (template `templates/INDEX.md.template`)
 
-## INDEX.md 必须包含
+## INDEX.md must contain
 
-- 书的基本信息 (作者/年份/一句话主旨)
-- 所有 skill 的列表,按主题分组
-- 引用图 (mermaid flowchart 或 graph)
-- 推荐学习顺序 (从依赖关系推出)
+- Basic information about the book (author/year/one-sentence summary)
+- A list of all skills, grouped by topic
+- Reference diagram (mermaid flowchart or graph)
+- Recommended learning order (derived from dependencies)
 
-## 节制原则
+## The Principle of Moderation
 
-**不要硬造关系**。如果两个 skill 之间没有真正的依赖/对比/组合关系,就不要写 related_skills。宁可稀疏也不要制造虚假链接。
+**Avoid creating artificial relationships.** Don't write `related_skills` if there's no genuine dependency/comparison/composition relationship between two skills. It's better to have sparse links than fake ones.
 
-一个经验值: 一本书拆出 10 个 skill,合理的关系数大约是 8–15 条。低于 5 条说明拆得太独立 (可能单元选得不对),高于 25 条说明在硬凑关系。
+A rule of thumb: If a book is broken down into 10 skills, a reasonable number of relationships is around 8-15. Fewer than 5 relationships indicates the breakdown is too independent (the unit selection may be incorrect), and more than 25 relationships indicate that the relationships are being artificially created.
